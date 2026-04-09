@@ -20,9 +20,9 @@ class Config:
     OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
-    API_PORT: int = int(os.getenv("API_PORT", "8000"))
+    API_PORT: int = int(os.getenv("API_PORT") or "8000")
 
-    LOG_LEVEL: int = logging.INFO
+    LOG_LEVEL: int = int(os.getenv("LOG_LEVEL", logging.INFO))
 
     @classmethod
     def ensure_dirs(cls):
