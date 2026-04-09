@@ -59,6 +59,9 @@ class OpenAIClient:
         if not related_records:
             return ""
 
+        if not self.api_key:
+            return ""
+
         related_context = "\n".join(
             [
                 f"- [{r.get('created_at', 'unknown')}] {r.get('content', '')}"
