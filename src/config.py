@@ -1,11 +1,17 @@
 """
 Configuration management - environment variables and app settings.
+Loads environment variables from .env file in project root.
 """
 
 import os
 import logging
 from pathlib import Path
 from typing import Optional
+from dotenv import load_dotenv
+
+
+PROJECT_ROOT: Path = Path(__file__).parent.parent
+load_dotenv(PROJECT_ROOT / ".env")
 
 
 class Config:
