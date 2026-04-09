@@ -36,12 +36,8 @@ def get_processor() -> RecordProcessor:
     return _processor
 
 
-class RecordCreateRequest(RecordCreate):
-    """Request model for creating a record."""
-
-
 class RecordResponseData(RecordResponse):
-    """Response model for record with insights."""
+    """Response model for record (insights not fetched for single record)."""
 
     insights: list[Insight] = []
 
@@ -51,7 +47,7 @@ class RecordResponseData(RecordResponse):
     response_model=RecordResponseData,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_record(request: RecordCreateRequest) -> RecordResponseData:
+async def create_record(request: RecordCreate) -> RecordResponseData:
     """Create a new record and generate insights."""
     processor = get_processor()
 
@@ -96,8 +92,8 @@ async def list_records(
     ]
 
 
-@router.get("/{record_id}", response_model=RecordResponseData)
-async def get_record(record_id: UUID) -> RecordResponseData:
+@router.get("/{record_id}", response_model=RecordResponse)
+async def get_record(record_id: UUID) -> RecordResponse:
     """Get a single record by ID."""
     processor = get_processor()
     record = processor.sqlite_store.get_record(str(record_id))
@@ -108,12 +104,11 @@ async def get_record(record_id: UUID) -> RecordResponseData:
             detail=f"Record {record_id} not found",
         )
 
-    return RecordResponseData(
+    return RecordResponse(
         id=record.id,
         content=record.content,
         type=record.type,
         mood=record.mood,
         context=record.context,
         created_at=record.created_at,
-        insights=[],
     )
