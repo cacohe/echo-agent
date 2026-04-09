@@ -19,12 +19,31 @@ Echo is an AI assistant that captures your daily碎片化 thoughts, emotions, an
 uv venv
 uv add fastapi uvicorn pydantic openai chromadb sqlite-utils apscheduler python-multipart httpx pytest pytest-asyncio
 
-# Set API key
-export OPENAI_API_KEY="your-api-key"
-
 # Run server
 python -m src.main
 ```
+
+### LLM Provider Configuration
+
+Echo supports both **OpenAI** and **MiniMax** as LLM providers.
+
+#### Using OpenAI (default)
+
+```bash
+export LLM_PROVIDER=openai
+export OPENAI_API_KEY="your-openai-api-key"
+export OPENAI_MODEL="gpt-4o-mini"  # optional, default is gpt-4o-mini
+```
+
+#### Using MiniMax
+
+```bash
+export LLM_PROVIDER=minimax
+export MINIMAX_API_KEY="your-minimax-api-key"
+export MINIMAX_MODEL="M2-her"  # optional, default is M2-her
+```
+
+MiniMax provides competitive pricing and good Chinese language support. Get your API key from [MiniMax Platform](https://platform.minimaxi.com/).
 
 ### API Endpoints
 
@@ -44,7 +63,7 @@ src/
 ├── api/           # REST API endpoints
 ├── core/          # Core processing engine
 ├── memory/        # SQLite + ChromaDB storage
-├── llm/           # OpenAI client wrapper
+├── llm/           # LLM client wrappers (OpenAI, MiniMax)
 └── models/        # Pydantic data models
 ```
 
