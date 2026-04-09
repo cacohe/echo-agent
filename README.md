@@ -12,38 +12,54 @@ Echo is an AI assistant that captures your daily碎片化 thoughts, emotions, an
 
 ## Quick Start
 
-### Backend
+### 1. Install Dependencies
 
 ```bash
-# Install dependencies
 uv venv
-uv add fastapi uvicorn pydantic openai chromadb sqlite-utils apscheduler python-multipart httpx pytest pytest-asyncio
+uv add fastapi uvicorn pydantic openai chromadb sqlite-utils apscheduler python-multipart httpx pytest pytest-asyncio python-dotenv
+```
 
-# Run server
+### 2. Configure Environment
+
+Copy `.env.example` to `.env` and fill in your API keys:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```env
+# Choose LLM provider: "openai" or "minimax"
+LLM_PROVIDER=minimax
+
+# MiniMax API (recommended for Chinese)
+MINIMAX_API_KEY=your-minimax-api-key
+MINIMAX_MODEL=M2-her
+
+# Or OpenAI (default)
+# OPENAI_API_KEY=your-openai-api-key
+# OPENAI_MODEL=gpt-4o-mini
+```
+
+### 3. Run Server
+
+```bash
 python -m src.main
 ```
 
-### LLM Provider Configuration
+The server will start at `http://localhost:8000`
 
-Echo supports both **OpenAI** and **MiniMax** as LLM providers.
+### LLM Provider
 
-#### Using OpenAI (default)
+Echo supports both **OpenAI** and **MiniMax**:
 
-```bash
-export LLM_PROVIDER=openai
-export OPENAI_API_KEY="your-openai-api-key"
-export OPENAI_MODEL="gpt-4o-mini"  # optional, default is gpt-4o-mini
-```
+| Provider | Model | Chinese Support | Price |
+|----------|-------|-----------------|-------|
+| MiniMax (recommended) | M2-her | Excellent | Lower |
+| OpenAI | gpt-4o-mini | Good | Higher |
 
-#### Using MiniMax
-
-```bash
-export LLM_PROVIDER=minimax
-export MINIMAX_API_KEY="your-minimax-api-key"
-export MINIMAX_MODEL="M2-her"  # optional, default is M2-her
-```
-
-MiniMax provides competitive pricing and good Chinese language support. Get your API key from [MiniMax Platform](https://platform.minimaxi.com/).
+Get your MiniMax API key from [MiniMax Platform](https://platform.minimaxi.com/).
 
 ### API Endpoints
 
