@@ -16,8 +16,15 @@ class Config:
     DB_PATH: Path = DATA_DIR / "echo.db"
     VECTOR_DIR: Path = DATA_DIR / "chromadb"
 
+    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai")
+
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
     OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+
+    MINIMAX_API_KEY: Optional[str] = os.getenv("MINIMAX_API_KEY")
+    MINIMAX_MODEL: str = os.getenv("MINIMAX_MODEL", "M2-her")
+    MINIMAX_BASE_URL: str = os.getenv("MINIMAX_BASE_URL", "https://api.minimaxi.com")
 
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
     API_PORT: int = int(os.getenv("API_PORT") or "8000")
