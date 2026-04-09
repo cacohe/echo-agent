@@ -9,6 +9,9 @@ from src.models.schemas import (
     Reminder,
     ReminderCreate,
     WeeklyReport,
+    RecordType,
+    Mood,
+    PatternInfo,
 )
 
 __all__ = [
@@ -20,4 +23,7 @@ __all__ = [
     "Reminder",
     "ReminderCreate",
     "WeeklyReport",
+    "RecordType",
+    "Mood",
+    "PatternInfo",
 ]
