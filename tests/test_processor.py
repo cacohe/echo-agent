@@ -118,14 +118,19 @@ class TestRecordProcessor:
 
 
 class TestAssociator:
-    def test_initialization(self, mock_vector_store, mock_llm_client):
-        associator = Associator(mock_vector_store, mock_llm_client)
+    def test_initialization(
+        self, mock_vector_store, mock_sqlite_store, mock_llm_client
+    ):
+        associator = Associator(mock_vector_store, mock_llm_client, mock_sqlite_store)
 
         assert associator.vector_store is mock_vector_store
         assert associator.llm_client is mock_llm_client
+        assert associator.sqlite_store is mock_sqlite_store
 
-    def test_find_related_no_embedding(self, mock_vector_store, mock_llm_client):
-        associator = Associator(mock_vector_store, mock_llm_client)
+    def test_find_related_no_embedding(
+        self, mock_vector_store, mock_sqlite_store, mock_llm_client
+    ):
+        associator = Associator(mock_vector_store, mock_llm_client, mock_sqlite_store)
 
         record = Record(
             id=uuid4(),
@@ -139,8 +144,10 @@ class TestAssociator:
         assert related == []
         mock_vector_store.search.assert_not_called()
 
-    def test_find_related_with_embedding(self, mock_vector_store, mock_llm_client):
-        associator = Associator(mock_vector_store, mock_llm_client)
+    def test_find_related_with_embedding(
+        self, mock_vector_store, mock_sqlite_store, mock_llm_client
+    ):
+        associator = Associator(mock_vector_store, mock_llm_client, mock_sqlite_store)
 
         record = Record(
             id=uuid4(),

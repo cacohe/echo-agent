@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
 
+from src.core.patterns import PatternAnalyzer
 from src.logger import get_logger
 from src.models.schemas import Insight, InsightType, Record, RecordCreate
 
@@ -26,6 +27,7 @@ class RecordProcessor:
         self.sqlite_store = sqlite_store
         self.vector_store = vector_store
         self.llm_client = llm_client
+        self.pattern_analyzer = PatternAnalyzer(sqlite_store, llm_client)
 
     def process_record(
         self, record_create: RecordCreate
@@ -139,10 +141,21 @@ class RecordProcessor:
 
         highlight = self.llm_client.generate_weekly_summary(records_data)
 
+        patterns = self.pattern_analyzer.analyze_patterns(period_records)
+        patterns_data = [
+            {
+                "name": p.name,
+                "description": p.description,
+                "frequency": p.frequency,
+                "confidence": p.confidence,
+            }
+            for p in patterns
+        ]
+
         return {
             "period": period,
             "total_records": len(period_records),
             "mood_distribution": mood_counts,
-            "patterns": [],
+            "patterns": patterns_data,
             "highlight": highlight,
         }
