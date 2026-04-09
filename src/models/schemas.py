@@ -74,7 +74,7 @@ class Insight(BaseModel):
     type: InsightType
     content: str
     confidence: float = Field(..., ge=0.0, le=1.0)
-    related_record_ids: list[UUID] = []
+    related_record_ids: list[UUID] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
@@ -103,8 +103,8 @@ class PatternInfo(BaseModel):
 
     name: str
     description: str
-    frequency: int
-    confidence: float
+    frequency: int = Field(..., ge=0)
+    confidence: float = Field(..., ge=0.0, le=1.0)
 
 
 class WeeklyReport(BaseModel):
