@@ -5,10 +5,11 @@ from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+from uuid import UUID
 
 import sqlite3
 
-from src.models.schemas import Insight, Record, RecordType, Reminder
+from src.models.schemas import Insight, InsightType, Record, RecordType, Reminder
 
 
 class SQLiteStore:
@@ -72,7 +73,7 @@ class SQLiteStore:
 
     @contextmanager
     def _get_conn(self):
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(str(self.db_path), check_same_thread=False, timeout=30)
         conn.row_factory = sqlite3.Row
         try:
             yield conn
@@ -108,6 +109,13 @@ class SQLiteStore:
             if not row:
                 return None
             return self._row_to_record(row)
+
+    def delete_record(self, record_id: str) -> None:
+        with self._get_conn() as conn:
+            conn.execute("DELETE FROM insights WHERE record_id = ?", (record_id,))
+            conn.execute("DELETE FROM reminders WHERE record_id = ?", (record_id,))
+            conn.execute("DELETE FROM records WHERE id = ?", (record_id,))
+            conn.commit()
 
     def get_recent_records(self, limit: int = 50) -> list[Record]:
         with self._get_conn() as conn:
@@ -147,6 +155,28 @@ class SQLiteStore:
             )
             conn.commit()
         return insight
+
+    def get_insight(self, insight_id: str) -> Optional[Insight]:
+        with self._get_conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM insights WHERE id = ?", (insight_id,)
+            ).fetchone()
+            if not row:
+                return None
+            return self._row_to_insight(row)
+
+    def _row_to_insight(self, row: sqlite3.Row) -> Insight:
+        return Insight(
+            id=row["id"],
+            record_id=row["record_id"],
+            type=InsightType(row["type"]),
+            content=row["content"],
+            confidence=row["confidence"],
+            related_record_ids=[
+                UUID(id) for id in json.loads(row["related_record_ids"])
+            ],
+            created_at=datetime.fromisoformat(row["created_at"]),
+        )
 
     def save_reminder(self, reminder: Reminder) -> Reminder:
         with self._get_conn() as conn:
