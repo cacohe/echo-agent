@@ -14,6 +14,29 @@ PROJECT_ROOT: Path = Path(__file__).parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
 
 
+def _parse_log_level(value: str | int) -> int:
+    """Parse log level from string name or int."""
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        value_upper = value.upper()
+        if value_upper == "DEBUG":
+            return logging.DEBUG
+        elif value_upper == "INFO":
+            return logging.INFO
+        elif value_upper == "WARNING":
+            return logging.WARNING
+        elif value_upper == "ERROR":
+            return logging.ERROR
+        elif value_upper == "CRITICAL":
+            return logging.CRITICAL
+        try:
+            return int(value)
+        except ValueError:
+            return logging.INFO
+    return logging.INFO
+
+
 class Config:
     """Application configuration."""
 
@@ -35,7 +58,7 @@ class Config:
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
     API_PORT: int = int(os.getenv("API_PORT") or "8000")
 
-    LOG_LEVEL: int = int(os.getenv("LOG_LEVEL", logging.INFO))
+    LOG_LEVEL: int = _parse_log_level(os.getenv("LOG_LEVEL", logging.INFO))
 
     @classmethod
     def ensure_dirs(cls):
