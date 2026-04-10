@@ -1,26 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { RecordButton } from "@/components/RecordButton";
 import { QuickStats } from "@/components/QuickStats";
 import { TodayInsight } from "@/components/TodayInsight";
-import { getRecentRecords } from "@/lib/db";
+import { apiClient } from "@/lib/api";
 import type { JournalRecord } from "@/lib/types";
 
 export default function HomePage() {
   const [todayRecords, setTodayRecords] = useState<JournalRecord[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const loadTodayRecords = useCallback(async () => {
+    try {
+      const records = await apiClient.getRecords(50);
+      const today = new Date().toDateString();
+      const todayRecs = records.filter(
+        (r: any) => new Date(r.created_at).toDateString() === today
+      );
+      setTodayRecords(todayRecs);
+    } catch (error) {
+      console.error("Failed to load records:", error);
+    }
+  }, []);
 
   useEffect(() => {
     loadTodayRecords();
-  }, []);
+  }, [loadTodayRecords, refreshKey]);
 
-  const loadTodayRecords = async () => {
-    const records = await getRecentRecords(50);
-    const today = new Date().toDateString();
-    const todayRecs = records.filter(
-      (r) => new Date(r.created_at).toDateString() === today
-    );
-    setTodayRecords(todayRecs);
+  const handleRecordCreated = () => {
+    setRefreshKey(k => k + 1);
   };
 
   return (
@@ -37,7 +46,7 @@ export default function HomePage() {
       </header>
 
       <section className="flex-1 flex flex-col items-center justify-center px-4">
-        <RecordButton />
+        <RecordButton onRecordCreated={handleRecordCreated} />
         <p className="mt-6 text-text-secondary text-sm">点击录音，说出你的想法</p>
       </section>
 

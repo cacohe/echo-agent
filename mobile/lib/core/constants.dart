@@ -1,14 +1,14 @@
 class AppConstants {
   static const String appName = 'Echo';
-  static const String apiBaseUrl = 'http://localhost:8000';
-  
+  static const String apiBaseUrl = 'https://echo-api-v7zo.onrender.com';
+
   static const Map<String, String> moodEmojis = {
     'happy': '😊',
     'neutral': '😐',
     'low': '😔',
     'angry': '😤',
   };
-  
+
   static const Map<String, int> moodColors = {
     'happy': 0xFF10B981,
     'neutral': 0xFF6B7280,

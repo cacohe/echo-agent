@@ -20,4 +20,4 @@ export const INSIGHT_COLORS: Record<string, string> = {
   counterfactual: "border-l-blue-500",
 };
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://echo-api-v7zo.onrender.com";

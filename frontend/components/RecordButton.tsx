@@ -4,7 +4,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { VoiceRecorder } from "./VoiceRecorder";
 
-export function RecordButton() {
+interface RecordButtonProps {
+  onRecordCreated?: () => void;
+}
+
+export function RecordButton({ onRecordCreated }: RecordButtonProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [showRecorder, setShowRecorder] = useState(false);
 
@@ -49,6 +53,7 @@ export function RecordButton() {
         <VoiceRecorder
           onClose={handleClose}
           onStop={handleStopRecording}
+          onRecordCreated={onRecordCreated}
         />
       )}
     </>

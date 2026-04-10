@@ -2,15 +2,15 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { addRecord } from "@/lib/db";
-import { generateId } from "@/lib/utils";
+import { apiClient } from "@/lib/api";
 
 interface VoiceRecorderProps {
   onClose: () => void;
   onStop: () => void;
+  onRecordCreated?: () => void;
 }
 
-export function VoiceRecorder({ onClose, onStop }: VoiceRecorderProps) {
+export function VoiceRecorder({ onClose, onStop, onRecordCreated }: VoiceRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [duration, setDuration] = useState(0);
   const [transcript, setTranscript] = useState("");
@@ -75,15 +75,16 @@ export function VoiceRecorder({ onClose, onStop }: VoiceRecorderProps) {
     setIsProcessing(true);
 
     const text = transcript || "语音记录";
-    const record = {
-      id: generateId(),
-      content: text,
-      type: "voice" as const,
-      created_at: new Date().toISOString(),
-      synced: false,
-    };
 
-    await addRecord(record);
+    try {
+      await apiClient.createRecord({
+        content: text,
+        type: "voice",
+      });
+      onRecordCreated?.();
+    } catch (error) {
+      console.error("Failed to create record:", error);
+    }
 
     setIsProcessing(false);
     onStop();

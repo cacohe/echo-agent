@@ -9,8 +9,9 @@ export interface JournalRecord {
   content: string;
   type: RecordType;
   mood?: Mood;
+  context?: string;
   created_at: string;
-  synced: boolean;
+  synced?: boolean;
 }
 
 export interface Insight {
