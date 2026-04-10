@@ -18,8 +18,12 @@ services:
       - key: PINECONE_ENVIRONMENT
         sync: false
       - key: LLM_PROVIDER
-        value: openai
-      - key: OPENAI_API_KEY
+        value: minimax
+      - key: MINIMAX_API_KEY
         sync: false
+      - key: MINIMAX_MODEL
+        value: M2-her
+      - key: MINIMAX_BASE_URL
+        value: https://api.minimaxi.com
       - key: LOG_LEVEL
         value: INFO
