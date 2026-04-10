@@ -1,3 +1,47 @@
-.worktrees/
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.egg/
+
+# Environment
 .env
+.env.local
+.env.*.local
+
+# Testing
+.pytest_cache/
+.coverage
+coverage/
+
+# Linting
+.ruff_cache/
+
+# Node
+.node_modules/
+frontend/node_modules/
+
+# Next.js
+frontend/.next/
+frontend/out/
+
+# Data
 data/
+
+# OS
+.DS_Store
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Worktrees
+.worktrees/
