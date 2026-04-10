@@ -1,8 +1,0 @@
-{
-  "framework": "nextjs",
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://echo-api-v7zo.onrender.com"
-  }
-}
