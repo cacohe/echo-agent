@@ -1,6 +1,5 @@
 """Pinecone vector store for production."""
 
-import os
 from typing import Optional
 
 from pinecone import Pinecone, ServerlessSpec
@@ -20,7 +19,7 @@ class PineconeStore:
         self._ensure_index(environment)
 
     def _ensure_index(self, environment: str) -> None:
-        existing = [idx.name for idx in self.pc.list_indexes()]
+        existing = self.pc.list_indexes()
         if self.index_name not in existing:
             self.pc.create_index(
                 name=self.index_name,
