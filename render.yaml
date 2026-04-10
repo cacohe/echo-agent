@@ -1,5 +1,5 @@
 # Render Blueprint
-# Deploys Echo Backend API as a Render Web Service
+# Deploys Echo Backend API and Web Frontend
 
 services:
   - type: web
@@ -28,3 +28,19 @@ services:
         value: https://api.minimaxi.com
       - key: LOG_LEVEL
         value: INFO
+
+  - type: web
+    name: echo-frontend
+    env: static
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: .next
+    headers:
+      - path: /.*
+        name: Access-Control-Allow-Origin
+        value: "*"
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://echo-api-v7zo.onrender.com
