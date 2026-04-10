@@ -6,18 +6,13 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, status
 
 from src.core.processor import RecordProcessor
-from src.llm.openai_client import OpenAIClient
-from src.memory.sqlite_store import SQLiteStore
-from src.memory.vector_store import VectorStore
 from src.models.schemas import (
     Insight,
     Mood,
-    Record,
     RecordCreate,
     RecordResponse,
     RecordType,
 )
-from src.config import config
 
 router = APIRouter(prefix="/api/records", tags=["records"])
 
@@ -28,9 +23,10 @@ def get_processor() -> RecordProcessor:
     """Singleton factory for RecordProcessor."""
     global _processor
     if _processor is None:
-        config.ensure_dirs()
-        sqlite_store = SQLiteStore(config.DB_PATH)
-        vector_store = VectorStore(config.VECTOR_DIR)
+        from src.llm.openai_client import OpenAIClient
+        from src.memory.factory import create_store
+
+        sqlite_store, vector_store = create_store()
         llm_client = OpenAIClient()
         _processor = RecordProcessor(sqlite_store, vector_store, llm_client)
     return _processor
