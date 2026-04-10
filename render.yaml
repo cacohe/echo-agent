@@ -7,6 +7,7 @@ services:
     env: python
     region: oregon
     plan: free
+    runtime: python312
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn src.main:app --bind 0.0.0.0:$PORT --workers 1 --threads 4
     healthCheckPath: /health
