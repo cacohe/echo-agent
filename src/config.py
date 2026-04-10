@@ -45,6 +45,8 @@ class Config:
     DB_PATH: Path = DATA_DIR / "echo.db"
     VECTOR_DIR: Path = DATA_DIR / "chromadb"
 
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
+
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai")
 
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
@@ -54,6 +56,9 @@ class Config:
     MINIMAX_API_KEY: Optional[str] = os.getenv("MINIMAX_API_KEY")
     MINIMAX_MODEL: str = os.getenv("MINIMAX_MODEL", "M2-her")
     MINIMAX_BASE_URL: str = os.getenv("MINIMAX_BASE_URL", "https://api.minimaxi.com")
+
+    PINECONE_API_KEY: Optional[str] = os.getenv("PINECONE_API_KEY")
+    PINECONE_ENVIRONMENT: str = os.getenv("PINECONE_ENVIRONMENT", "us-east-1")
 
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
     API_PORT: int = int(os.getenv("API_PORT") or "8000")

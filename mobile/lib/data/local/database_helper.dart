@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 import '../../domain/models/record.dart';
 import '../../domain/models/insight.dart';
 import '../../domain/models/reminder.dart';
+import '../../domain/models/enums.dart';
 
 class DatabaseHelper {
   static Database? _database;

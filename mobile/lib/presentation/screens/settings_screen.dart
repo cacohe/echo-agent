@@ -138,13 +138,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Future<void> _exportData() async {
     try {
-      final records = await ref.read(recordsProvider.future);
+      final recordsAsync = ref.read(recordsProvider);
+      final records = recordsAsync.valueOrNull ?? [];
       final data = {
         'records': records,
         'exported_at': DateTime.now().toIso8601String(),
       };
       setState(() => _exportStatus = '导出成功');
-    } catch {
+    } catch (e) {
       setState(() => _exportStatus = '导出失败');
     }
   }

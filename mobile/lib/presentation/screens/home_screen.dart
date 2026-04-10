@@ -68,7 +68,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 data: (records) {
                   final todayRecords = records
                       .where((r) =>
-                          r.createdAt.toDateString() == DateTime.now().toDateString())
+                          _isSameDay(r.createdAt, DateTime.now()))
                       .toList();
                   if (todayRecords.isEmpty) return const SizedBox.shrink();
                   return Column(
@@ -119,5 +119,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     setState(() {
       _isRecording = !_isRecording;
     });
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 }
