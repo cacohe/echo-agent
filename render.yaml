@@ -6,7 +6,6 @@ services:
     name: echo-api
     env: python
     region: oregon
-    plan: free
     runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn src.main:app --bind 0.0.0.0:$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker --threads 4
@@ -31,14 +30,13 @@ services:
 
   - type: web
     name: echo-frontend
-    env: static
+    env: node
+    region: oregon
+    runtime: node22
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: .next
-    headers:
-      - path: /.*
-        name: Access-Control-Allow-Origin
-        value: "*"
+    startCommand: npm start
+    healthCheckPath: /
     envVars:
       - key: NEXT_PUBLIC_API_URL
         value: https://echo-api-v7zo.onrender.com
