@@ -32,7 +32,7 @@ services:
     name: echo-frontend
     env: node
     region: oregon
-    runtime: node22
+    runtime: node
     rootDir: frontend
     buildCommand: npm install && npm run build
     startCommand: npm start
