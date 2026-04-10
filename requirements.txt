@@ -14,7 +14,7 @@ psycopg2-binary==2.9.9
 sqlalchemy==2.0.25
 
 # Vector Store - Pinecone for production
-pinecone-client==3.0.0
+pinecone-client==5.0.1
 
 # LLM
 openai==1.12.0
